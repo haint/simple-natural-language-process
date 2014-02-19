@@ -19,6 +19,7 @@ package org.simple.nlp.dictionary;
 
 import org.junit.Test;
 import org.simple.nlp.dictionary.entities.SemanticEntity;
+import org.simple.nlp.dictionary.entities.SemanticWord;
 
 import junit.framework.TestCase;
 
@@ -31,13 +32,13 @@ public class WordTreeTestCase extends TestCase {
 
     @Test
     public void testMatch() {
-        SemanticEntity e1 = new SemanticEntity();
+        SemanticEntity e1 = new SemanticWord();
         e1.setName("cong hoa");
-        SemanticEntity e2 = new SemanticEntity();
+        SemanticEntity e2 = new SemanticWord();
         e2.setName("xa hoi");
-        SemanticEntity e3 = new SemanticEntity();
+        SemanticEntity e3 = new SemanticWord();
         e3.setName("cong hoa xa hoi");
-        SemanticEntity e4 = new SemanticEntity();
+        SemanticEntity e4 = new SemanticWord();
         e4.setName("cong hoa xa hoi chu nghia Viet Nam");
         WordTree root = new WordTree(null);
         root.addEntity(new String[] {"cong", "hoa"}, e1);

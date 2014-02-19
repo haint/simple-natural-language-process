@@ -17,24 +17,28 @@
  */
 package org.simple.nlp.dictionary.entities;
 
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
  *
  * Feb 18, 2014
  */
-public class SemanticEntity {
+public abstract class SemanticEntity implements Serializable {
 
-    public static final String NAME = "name";
+    /** .*/
+    private static final long serialVersionUID = 1L;
 
-    public static final String VARIANT = "variant";
-    
-    public static final String KEYWORD = "keyword";
-    
+    /** .*/
     protected String name;
     
-    protected String[] variants;
+    /** .*/
+    protected String[] variants, keywords;
     
-    protected String[] keywords;
+    public abstract String getEntityType();
 
     public String getName() {
         return name;
@@ -60,13 +64,25 @@ public class SemanticEntity {
         this.keywords = keywords;
     }
     
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName())
-            .append("[name=").append(name)
+            .append("name=").append(name)
+            .append(", entity-type=").append(getEntityType())
             .append(", variants=").append(variants)
-            .append(", keywords=").append(keywords)
-            .append("]");
+            .append(", keywords=").append(keywords);
         return sb.toString();
+    }
+    
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+    
+    public String generateID() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.digest(toString().getBytes("UTF-8"));
+        return md.toString();
     }
 }
