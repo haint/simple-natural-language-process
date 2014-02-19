@@ -18,9 +18,7 @@
 package org.simple.nlp.dictionary.entities;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
@@ -37,6 +35,17 @@ public abstract class SemanticEntity implements Serializable {
     
     /** .*/
     protected String[] variants, keywords;
+    
+    /** .*/
+    private String uuid;
+    
+    public SemanticEntity() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+    
+    public String getUUID() {
+        return uuid;
+    }
     
     public abstract String getEntityType();
 
@@ -80,9 +89,13 @@ public abstract class SemanticEntity implements Serializable {
         return toString().hashCode();
     }
     
-    public String generateID() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.digest(toString().getBytes("UTF-8"));
-        return md.toString();
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        else if (obj instanceof SemanticEntity) {
+            SemanticEntity that = (SemanticEntity) obj;
+            return that.hashCode() == this.hashCode();
+        }
+        return false;
     }
 }
