@@ -51,4 +51,9 @@ public class Synset extends SemanticEntity {
         sb.append(", synset=").append(synset);
         return sb.toString();
     }
+
+    @Override
+    public void tranform(String src) {
+      throw new UnsupportedOperationException(src);
+    }
 }

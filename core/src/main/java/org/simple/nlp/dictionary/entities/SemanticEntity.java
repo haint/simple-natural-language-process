@@ -20,6 +20,11 @@ package org.simple.nlp.dictionary.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
  *
@@ -37,6 +42,9 @@ public abstract class SemanticEntity implements Serializable {
     protected String[] variants, keywords;
     
     /** .*/
+    protected transient String SEPARATOR = ">>", BREAKER = ",";
+    
+    /** .*/
     private String uuid;
     
     public SemanticEntity() {
@@ -48,7 +56,43 @@ public abstract class SemanticEntity implements Serializable {
     }
     
     public abstract String getEntityType();
-
+    
+    /**
+     * To add value of entity into Lucene document for indexing.
+     * 
+     * @param idoc the Lucene document.
+     */
+    public void doIndex(Document idoc) {
+        idoc.add(new StringField("uuid", uuid, Store.YES));
+        idoc.add(new TextField("name", name, Store.NO));
+        
+        if (variants != null) {
+          for (String variant : variants) {
+            idoc.add(new TextField("variants", variant, Store.NO));
+          }
+        }
+        
+        if (keywords != null) {
+          for (String keyword : keywords) {
+            idoc.add(new TextField("keywords", keyword, Store.NO));
+          }
+        }
+    }
+    
+    /**
+     * To convert a string which specify format to semantic entity.
+     * The format is "name1:value1>>name2:value2 ..."
+     * The last block of string source represent name and variants of entity. 
+     *  In example: "country:vietnam >> city:ha noi, hanoi, HN", represent {@link Product} entity named "ha noi", variants {"hanoi", "HN"},
+     *  city: "ha noi" and country "vietnam".
+     *  
+     * @param src The String source is formated
+     * @throws SecurityException 
+     * @throws NoSuchFieldException 
+     * @throws Exception 
+     */
+    public abstract void tranform(String src) throws Exception;
+    
     public String getName() {
         return name;
     }

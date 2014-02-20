@@ -66,4 +66,15 @@ public class SemanticWord extends SemanticEntity {
             .append(", antonym=").append(antonym);
         return sb.toString();
     }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * The example format is "noun: hoa binh"
+     */
+    @Override
+    public void tranform(String src) {
+      String name = src.substring("noun:".length()).trim();
+      this.name = name;
+    }
 }

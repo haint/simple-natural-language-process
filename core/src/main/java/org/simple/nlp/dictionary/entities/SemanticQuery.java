@@ -61,4 +61,9 @@ public class SemanticQuery extends SemanticEntity {
             .append(", query=").append(query);
         return sb.toString();
     }
+
+    @Override
+    public void tranform(String src) {
+      throw new UnsupportedOperationException(src);
+    }
 }
