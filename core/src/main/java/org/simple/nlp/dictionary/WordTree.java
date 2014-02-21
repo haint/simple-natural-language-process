@@ -22,10 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.simple.nlp.dictionary.entities.SemanticEntity;
+import org.simple.nlp.dictionary.utils.VietnameseUtil;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
@@ -82,7 +85,7 @@ public class WordTree {
     return false;
   }
 
-  public void addEntity(SemanticEntity newEntity) {
+  private void incrementEntity(SemanticEntity newEntity) {
     if (entities == null)
       entities = new SemanticEntity[] { newEntity };
     else {
@@ -96,14 +99,34 @@ public class WordTree {
       this.entities = tmp;
     }
   }
-
-  public void addEntity(String[] path, SemanticEntity newEntity) {
-    this.addEntity(path, 0, newEntity);
+  
+  public void addEntity(SemanticEntity newEntity) {
+    Set<String> holder = new HashSet<String>();
+    holder.add(newEntity.getName());
+    if (VietnameseUtil.containVietnameseCharacter(newEntity.getName())) {
+      holder.add(newEntity.getName());
+    }
+    
+    //
+    String[] variants = newEntity.getVariants();
+    if (variants != null) {
+      for (String variant : variants) {
+        holder.add(variant);
+        if (VietnameseUtil.containVietnameseCharacter(newEntity.getName())) {
+          holder.add(variant);
+        } 
+      }
+    }
+    
+    //
+    for (String s : holder) {
+      addEntity(s.split(" "), 0, newEntity);
+    }
   }
 
   private void addEntity(String[] path, int currentDeep, SemanticEntity newEntity) {
     if (currentDeep == path.length) {
-      addEntity(newEntity);
+      incrementEntity(newEntity);
       return;
     }
 

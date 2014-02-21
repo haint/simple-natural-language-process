@@ -41,15 +41,15 @@ public class WordTreeTestCase extends TestCase {
     SemanticEntity e4 = new SemanticWord();
     e4.setName("cong hoa xa hoi chu nghia Viet Nam");
     WordTree root = new WordTree(null);
-    root.addEntity(new String[] { "cong", "hoa" }, e1);
-    root.addEntity(new String[] { "xa", "hoi" }, e2);
-    root.addEntity(new String[] { "cong", "hoa", "xa", "hoi" }, e3);
-    root.addEntity(new String[] { "cong", "hoa", "xa", "hoi", "chu", "nghia" }, e4);
+    root.addEntity(e1);
+    root.addEntity(e2);
+    root.addEntity(e3);
+    root.addEntity(e4);
     root.dump(System.out, "  ");
 
     assertEquals(e1, root.match(new String[] { "cong", "hoa" }).getEntities()[0]);
     assertEquals(e2, root.match(new String[] { "xa", "hoi" }).getEntities()[0]);
     assertEquals(e3, root.match(new String[] { "cong", "hoa", "xa", "hoi" }).getEntities()[0]);
-    assertEquals(e4, root.match(new String[] { "cong", "hoa", "xa", "hoi", "chu", "nghia" }).getEntities()[0]);
+    assertEquals(e4, root.match(new String[] { "cong", "hoa", "xa", "hoi", "chu", "nghia", "Viet", "Nam" }).getEntities()[0]);
   }
 }
