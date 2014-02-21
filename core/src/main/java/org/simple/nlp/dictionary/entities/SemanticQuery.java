@@ -19,51 +19,50 @@ package org.simple.nlp.dictionary.entities;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 19, 2014
+ * 
+ *         Feb 19, 2014
  */
 public class SemanticQuery extends SemanticEntity {
 
-    /** .*/
-    private static final long serialVersionUID = 1L;
-    
-    /** .*/
-    public static final String ENTITY_TYPE = "semantic-query";
-    
-    /** .*/
-    protected String description, query;
+  /** . */
+  private static final long serialVersionUID = 1L;
 
-    @Override
-    public String getEntityType() {
-        return ENTITY_TYPE;
-    }
+  /** . */
+  public static final String ENTITY_TYPE = "semantic-query";
 
-    public String getDescription() {
-        return description;
-    }
+  /** . */
+  protected String description, query;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  @Override
+  public String getEntityType() {
+    return ENTITY_TYPE;
+  }
 
-    public String getQuery() {
-        return query;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public void setQuery(String query) {
-        this.query = query;
-    }
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(super.toString());
-        sb.append(", description=").append(description)
-            .append(", query=").append(query);
-        return sb.toString();
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    @Override
-    public void tranform(String src) {
-      throw new UnsupportedOperationException(src);
-    }
+  public String getQuery() {
+    return query;
+  }
+
+  public void setQuery(String query) {
+    this.query = query;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(super.toString());
+    sb.append(", description=").append(description).append(", query=").append(query);
+    return sb.toString();
+  }
+
+  @Override
+  public void tranform(String src) {
+    throw new UnsupportedOperationException(src);
+  }
 }

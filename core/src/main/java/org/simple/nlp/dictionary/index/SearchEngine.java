@@ -35,35 +35,35 @@ import org.apache.lucene.util.Version;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 20, 2014
+ * 
+ *         Feb 20, 2014
  */
 public class SearchEngine {
-    
-    private IndexSearcher searcher;
-    
-    public SearchEngine (String indexDir) throws IOException {
-        IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(indexDir)));
-        searcher = new IndexSearcher(reader);
-    }
 
-    public TopDocsCollector<ScoreDoc> query (String query, int limit) throws ParseException, IOException {
-        TopScoreDocCollector collector = TopScoreDocCollector.create(limit, false);
-        QueryParser parser = new QueryParser(Version.LUCENE_46, "name", new CustomAnalyzer());
-        Query lquery = parser.parse(query);
-        searcher.search(lquery, collector);
-        return collector;
-    }
-    
-    public void update() throws IOException {
-        DirectoryReader reader = (DirectoryReader) searcher.getIndexReader();
-        reader = DirectoryReader.openIfChanged(reader);
-        Similarity similarity = searcher.getSimilarity();
-        searcher = new IndexSearcher(reader);
-        searcher.setSimilarity(similarity);
-    }
-    
-    public void close() throws IOException {
-        searcher.getIndexReader().close();
-    }
+  private IndexSearcher searcher;
+
+  public SearchEngine(String indexDir) throws IOException {
+    IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(indexDir)));
+    searcher = new IndexSearcher(reader);
+  }
+
+  public TopDocsCollector<ScoreDoc> query(String query, int limit) throws ParseException, IOException {
+    TopScoreDocCollector collector = TopScoreDocCollector.create(limit, false);
+    QueryParser parser = new QueryParser(Version.LUCENE_46, "name", new CustomAnalyzer());
+    Query lquery = parser.parse(query);
+    searcher.search(lquery, collector);
+    return collector;
+  }
+
+  public void update() throws IOException {
+    DirectoryReader reader = (DirectoryReader) searcher.getIndexReader();
+    reader = DirectoryReader.openIfChanged(reader);
+    Similarity similarity = searcher.getSimilarity();
+    searcher = new IndexSearcher(reader);
+    searcher.setSimilarity(similarity);
+  }
+
+  public void close() throws IOException {
+    searcher.getIndexReader().close();
+  }
 }

@@ -25,34 +25,37 @@ import org.apache.lucene.util.Version;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 20, 2014
+ * 
+ *         Feb 20, 2014
  */
 final class CustomAnalyzer extends Analyzer {
 
+  @Override
+  protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+    final WordTokenizer src = new WordTokenizer(Version.LUCENE_46, reader);
+    return new TokenStreamComponents(src);
+  }
+
+  class WordTokenizer extends CharTokenizer {
+
+    public WordTokenizer(Version matchVersion, Reader input) {
+      super(matchVersion, input);
+    }
+
     @Override
-    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-        final WordTokenizer src = new WordTokenizer(Version.LUCENE_46, reader);
-        return new TokenStreamComponents(src);
+    protected boolean isTokenChar(int c) {
+      if (Character.isLetter(c))
+        return true;
+      if (c >= '0' && c <= '9')
+        return true;
+      if (c == '.' || c == '-' || c == '_' || c == '/' || c == ':' || c == '@')
+        return true;
+      return false;
     }
-    
-    class WordTokenizer extends CharTokenizer {
 
-        public WordTokenizer(Version matchVersion, Reader input) {
-            super(matchVersion, input);
-        }
-
-        @Override
-        protected boolean isTokenChar(int c) {
-            if (Character.isLetter(c)) return true;
-            if (c >= '0' && c <= '9') return true;
-            if (c == '.' || c == '-' || c == '_' || c == '/' || c == ':' || c == '@') return true;
-            return false;
-        }
-        
-        @Override
-        protected int normalize(int c) {
-            return Character.toLowerCase(c);
-        }
+    @Override
+    protected int normalize(int c) {
+      return Character.toLowerCase(c);
     }
+  }
 }

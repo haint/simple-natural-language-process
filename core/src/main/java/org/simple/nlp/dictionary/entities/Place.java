@@ -28,196 +28,197 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.Field.Store;
 
-
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 19, 2014
+ * 
+ *         Feb 19, 2014
  */
 public class Place extends SemanticEntity {
 
-    /** .*/
-    private static final long serialVersionUID = 1L;
+  /** . */
+  private static final long serialVersionUID = 1L;
 
-    /** .*/
-    public static final String ENTITY_TYPE = "place";
-    
-    /** .*/
-    protected String[] type;
-    
-    /** .*/
-    protected String address, place, street, quarter, district, city, province, country, description;
-    
-    @Override
-    public String getEntityType() {
-        return ENTITY_TYPE;
-    }
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(super.toString());
-        sb.append(", address=").append(address)
-            .append(", place=").append(place)
-            .append(", street=").append(street)
-            .append(", quarter=").append(quarter)
-            .append(", district=").append(district)
-            .append(", city=").append(city)
-            .append(", province=").append(province)
-            .append(", country=").append(country)
-            .append(", type=").append(type)
-            .append(", description=").append(description);
-        return sb.toString();
-    }
-    
-    @Override
-    public void doIndex(Document idoc) {
-      super.doIndex(idoc);
-      if (country != null) idoc.add(new StringField("country@"+ENTITY_TYPE, country, Store.NO));
-      if (province != null) idoc.add(new StringField("province@"+ENTITY_TYPE, province, Store.NO));
-      if (city != null) idoc.add(new StringField("city@"+ENTITY_TYPE, city, Store.NO));
-      if (district != null) idoc.add(new StringField("district@"+ENTITY_TYPE, district, Store.NO));
-      if (quarter != null) idoc.add(new StringField("quarter@"+ENTITY_TYPE, quarter, Store.NO));
-      if (street != null) idoc.add(new StringField("street@"+ENTITY_TYPE, street, Store.NO));
-      if (place != null) idoc.add(new StringField("place@"+ENTITY_TYPE, place, Store.NO));
-      if (address != null) idoc.add(new StringField("address@"+ENTITY_TYPE, address, Store.NO));
-      if (type != null) {
-        for (String s : type)
-          idoc.add(new StringField("type@"+ENTITY_TYPE, s, Store.NO));
-      }
-    }
+  /** . */
+  public static final String ENTITY_TYPE = "place";
 
-    public String[] getType() {
-        return type;
-    }
+  /** . */
+  protected String[] type;
 
-    public void setType(String[] type) {
-        this.type = type;
-    }
+  /** . */
+  protected String address, place, street, quarter, district, city, province, country, description;
 
-    public String getAddress() {
-        return address;
-    }
+  @Override
+  public String getEntityType() {
+    return ENTITY_TYPE;
+  }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(super.toString());
+    sb.append(", address=").append(address).append(", place=").append(place).append(", street=").append(street)
+        .append(", quarter=").append(quarter).append(", district=").append(district).append(", city=").append(city)
+        .append(", province=").append(province).append(", country=").append(country).append(", type=").append(type)
+        .append(", description=").append(description);
+    return sb.toString();
+  }
 
-    public String getPlace() {
-        return place;
+  @Override
+  public void doIndex(Document idoc) {
+    super.doIndex(idoc);
+    if (country != null)
+      idoc.add(new StringField("country@" + ENTITY_TYPE, country, Store.NO));
+    if (province != null)
+      idoc.add(new StringField("province@" + ENTITY_TYPE, province, Store.NO));
+    if (city != null)
+      idoc.add(new StringField("city@" + ENTITY_TYPE, city, Store.NO));
+    if (district != null)
+      idoc.add(new StringField("district@" + ENTITY_TYPE, district, Store.NO));
+    if (quarter != null)
+      idoc.add(new StringField("quarter@" + ENTITY_TYPE, quarter, Store.NO));
+    if (street != null)
+      idoc.add(new StringField("street@" + ENTITY_TYPE, street, Store.NO));
+    if (place != null)
+      idoc.add(new StringField("place@" + ENTITY_TYPE, place, Store.NO));
+    if (address != null)
+      idoc.add(new StringField("address@" + ENTITY_TYPE, address, Store.NO));
+    if (type != null) {
+      for (String s : type)
+        idoc.add(new StringField("type@" + ENTITY_TYPE, s, Store.NO));
     }
+  }
 
-    public void setPlace(String place) {
-        this.place = place;
-    }
+  public String[] getType() {
+    return type;
+  }
 
-    public String getStreet() {
-        return street;
-    }
+  public void setType(String[] type) {
+    this.type = type;
+  }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
+  public String getAddress() {
+    return address;
+  }
 
-    public String getQuarter() {
-        return quarter;
-    }
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-    public void setQuarter(String quarter) {
-        this.quarter = quarter;
-    }
+  public String getPlace() {
+    return place;
+  }
 
-    public String getDistrict() {
-        return district;
-    }
+  public void setPlace(String place) {
+    this.place = place;
+  }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
+  public String getStreet() {
+    return street;
+  }
 
-    public String getCity() {
-        return city;
-    }
+  public void setStreet(String street) {
+    this.street = street;
+  }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+  public String getQuarter() {
+    return quarter;
+  }
 
-    public String getProvince() {
-        return province;
-    }
+  public void setQuarter(String quarter) {
+    this.quarter = quarter;
+  }
 
-    public void setProvince(String province) {
-        this.province = province;
-    }
+  public String getDistrict() {
+    return district;
+  }
 
-    public String getCountry() {
-        return country;
-    }
+  public void setDistrict(String district) {
+    this.district = district;
+  }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+  public String getCity() {
+    return city;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getProvince() {
+    return province;
+  }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * The example format is "country: việt nam >> city: cần thơ, tp.cần thơ, tp. cần thơ, tp cần thơ, tp . cần thơ"
-     *  In this example, The last block represent name and variants
-     */
-    @Override
-    public void tranform(String src) throws Exception {
-      List<String> list = Arrays.asList(src.split(SEPARATOR));
-      for (Iterator<String> i = list.iterator(); i.hasNext(); ) {
-        src = i.next();
-        int colon = src.indexOf(':');
-        
-        String fieldName = src.substring(0, colon).trim();
-        String fieldValue = src.substring(colon + 1).trim();
-        
-        fieldName = Normalizer.INSTANCE.resolve(fieldName);
-        if (!i.hasNext()) {
-          String[] values = fieldValue.split(BREAKER);
-          this.name = values[0];
-          
-          if (values.length > 1) {
-            this.variants = new String[values.length - 1];
-            System.arraycopy(values, 1, variants, 0, variants.length);
-          }
-          return;
+  public void setProvince(String province) {
+    this.province = province;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * The example format is "country: việt nam >> city: cần thơ, tp.cần thơ, tp. cần thơ, tp cần thơ, tp . cần thơ" In this
+   * example, The last block represent name and variants
+   */
+  @Override
+  public void tranform(String src) throws Exception {
+    List<String> list = Arrays.asList(src.split(SEPARATOR));
+    for (Iterator<String> i = list.iterator(); i.hasNext();) {
+      src = i.next();
+      int colon = src.indexOf(':');
+
+      String fieldName = src.substring(0, colon).trim();
+      String fieldValue = src.substring(colon + 1).trim();
+
+      fieldName = Normalizer.INSTANCE.resolve(fieldName);
+      if (!i.hasNext()) {
+        String[] values = fieldValue.split(BREAKER);
+        this.name = values[0];
+
+        if (values.length > 1) {
+          this.variants = new String[values.length - 1];
+          System.arraycopy(values, 1, variants, 0, variants.length);
         }
-        
-        Field field = getClass().getDeclaredField(fieldName);
-        field.set(this, fieldValue);
+        return;
       }
+
+      Field field = getClass().getDeclaredField(fieldName);
+      field.set(this, fieldValue);
     }
-    
-    private static class Normalizer {
-      
-      private static Normalizer INSTANCE = new Normalizer();
-      
-      private Map<String, String> map; 
-      
-      Normalizer() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("thị xã", "city");
-        map.put("quận", "district");
-        map.put("huyện", "district");
-        map.put("phường", "quarter");
-        map.put("thị trấn", "quarter");
-        map.put("xã", "quarter");
-        this.map = map;
-      }
-      
-      String resolve(String s) {
-        return map.get(s) == null ? s : map.get(s);
-      }
+  }
+
+  private static class Normalizer {
+
+    private static Normalizer INSTANCE = new Normalizer();
+
+    private Map<String, String> map;
+
+    Normalizer() {
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("thị xã", "city");
+      map.put("quận", "district");
+      map.put("huyện", "district");
+      map.put("phường", "quarter");
+      map.put("thị trấn", "quarter");
+      map.put("xã", "quarter");
+      this.map = map;
     }
+
+    String resolve(String s) {
+      return map.get(s) == null ? s : map.get(s);
+    }
+  }
 }

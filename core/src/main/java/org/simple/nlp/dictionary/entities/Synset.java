@@ -19,41 +19,41 @@ package org.simple.nlp.dictionary.entities;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 19, 2014
+ * 
+ *         Feb 19, 2014
  */
 public class Synset extends SemanticEntity {
 
-    /** .*/
-    private static final long serialVersionUID = 1L;
+  /** . */
+  private static final long serialVersionUID = 1L;
 
-    /** .*/
-    public static final String ENTITY_TYPE = "synset";
-    
-    protected String[] synset;
-    
-    @Override
-    public String getEntityType() {
-        return ENTITY_TYPE;
-    }
+  /** . */
+  public static final String ENTITY_TYPE = "synset";
 
-    public String[] getSynset() {
-        return synset;
-    }
+  protected String[] synset;
 
-    public void setSynset(String[] synset) {
-        this.synset = synset;
-    }
+  @Override
+  public String getEntityType() {
+    return ENTITY_TYPE;
+  }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(super.toString());
-        sb.append(", synset=").append(synset);
-        return sb.toString();
-    }
+  public String[] getSynset() {
+    return synset;
+  }
 
-    @Override
-    public void tranform(String src) {
-      throw new UnsupportedOperationException(src);
-    }
+  public void setSynset(String[] synset) {
+    this.synset = synset;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(super.toString());
+    sb.append(", synset=").append(synset);
+    return sb.toString();
+  }
+
+  @Override
+  public void tranform(String src) {
+    throw new UnsupportedOperationException(src);
+  }
 }

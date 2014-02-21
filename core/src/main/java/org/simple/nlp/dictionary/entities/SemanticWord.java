@@ -19,62 +19,60 @@ package org.simple.nlp.dictionary.entities;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 19, 2014
+ * 
+ *         Feb 19, 2014
  */
 public class SemanticWord extends SemanticEntity {
 
-    /** .*/
-    private static final long serialVersionUID = 1L;
-    
-    /** .*/
-    public static final String ENTITY_TYPE = "word";
+  /** . */
+  private static final long serialVersionUID = 1L;
 
-    /** .*/
-    protected String[] type, synonym, antonym;
-    
-    @Override
-    public String getEntityType() {
-        return ENTITY_TYPE;
-    }
+  /** . */
+  public static final String ENTITY_TYPE = "word";
 
-    public String[] getSynonym() {
-        return synonym;
-    }
+  /** . */
+  protected String[] type, synonym, antonym;
 
-    public void setSynonym(String[] synonym) {
-        this.synonym = synonym;
-    }
+  @Override
+  public String getEntityType() {
+    return ENTITY_TYPE;
+  }
 
-    public String[] getAntonym() {
-        return antonym;
-    }
+  public String[] getSynonym() {
+    return synonym;
+  }
 
-    public void setAntonym(String[] antonym) {
-        this.antonym = antonym;
-    }
+  public void setSynonym(String[] synonym) {
+    this.synonym = synonym;
+  }
 
-    public void setType(String[] type) {
-        this.type = type;
-    }
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(super.toString());
-        sb.append(", type=").append(type)
-            .append(", synonym=").append(synonym)
-            .append(", antonym=").append(antonym);
-        return sb.toString();
-    }
+  public String[] getAntonym() {
+    return antonym;
+  }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * The example format is "noun: hoa binh"
-     */
-    @Override
-    public void tranform(String src) {
-      String name = src.substring("noun:".length()).trim();
-      this.name = name;
-    }
+  public void setAntonym(String[] antonym) {
+    this.antonym = antonym;
+  }
+
+  public void setType(String[] type) {
+    this.type = type;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(super.toString());
+    sb.append(", type=").append(type).append(", synonym=").append(synonym).append(", antonym=").append(antonym);
+    return sb.toString();
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * The example format is "noun: hoa binh"
+   */
+  @Override
+  public void tranform(String src) {
+    String name = src.substring("noun:".length()).trim();
+    this.name = name;
+  }
 }

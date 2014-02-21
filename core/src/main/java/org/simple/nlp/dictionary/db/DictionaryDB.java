@@ -38,82 +38,83 @@ import com.sleepycat.je.EnvironmentConfig;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
- *
- * Feb 20, 2014
+ * 
+ *         Feb 20, 2014
  */
 public class DictionaryDB {
 
   private Database db;
-  
+
   private StoredSortedMap<String, SemanticEntity> store;
 
   private Environment env;
-  
+
   private IndexEngine indexer;
-  
+
   private String dbPath;
-  
-  public DictionaryDB (String path, boolean writeable) throws IOException {
-    
+
+  public DictionaryDB(String path, boolean writeable) throws IOException {
+
     this.dbPath = path;
-    
+
     EnvironmentConfig envConfig = new EnvironmentConfig();
     envConfig.setTransactional(false);
     envConfig.setAllowCreate(true);
     envConfig.setCacheSize(5 * 1024 * 1024);
-    
+
     File folder = new File(path + "/db");
-    if (!folder.exists()) folder.mkdirs();
-    
+    if (!folder.exists())
+      folder.mkdirs();
+
     env = new Environment(folder, envConfig);
-    
+
     DatabaseConfig dbConfig = new DatabaseConfig();
     dbConfig.setTransactional(false);
     dbConfig.setAllowCreate(true);
     dbConfig.setDeferredWrite(true);
     dbConfig.setSortedDuplicates(false);
-    
+
     this.db = env.openDatabase(null, "dictionary", dbConfig);
     this.store = new StoredSortedMap<String, SemanticEntity>(db, new StringBinding(), new SemanticEntityBinding(), writeable);
     this.indexer = new IndexEngine(path + "/index");
   }
-  
+
   public String getPath() {
     return dbPath;
   }
-  
-  public void save (SemanticEntity entity) throws IOException {
+
+  public void save(SemanticEntity entity) throws IOException {
     store.put(entity.getUUID(), entity);
     indexer.index(entity, true);
   }
-  
+
   public void update(String uuid, SemanticEntity entity) throws IOException {
     if (store.containsKey(uuid))
       store.replace(uuid, entity);
     else
       store.put(uuid, entity);
-    
+
     //
     indexer.index(entity, false);
   }
-  
+
   public SemanticEntity remove(String uuid) {
     return store.remove(uuid);
   }
-  
+
   public void commit() throws IOException {
     db.sync();
     indexer.commit();
   }
-  
+
   public void compress() {
     db.getEnvironment().compress();
   }
-  
+
   public Iterator<SemanticEntity> getSemanticEntities() {
     return store.values().iterator();
   }
-  
+
   public void close() throws IOException {
     db.sync();
     db.close();
@@ -121,19 +122,19 @@ public class DictionaryDB {
     env.sync();
     env.close();
   }
-  
+
   public long count() {
     return db.count();
   }
-  
+
   public boolean containsKey(String uuid) {
     return store.containsKey(uuid);
   }
-  
+
   public SemanticEntity search(String uuid) {
     return store.get(uuid);
   }
-  
+
   private class SemanticEntityBinding extends TupleBinding<SemanticEntity> {
 
     @Override
