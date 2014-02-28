@@ -66,6 +66,10 @@ public class IndexEngine {
       writer.updateDocument(term, idoc);
     }
   }
+  
+  public void delete(String uuid) throws IOException {
+    writer.deleteDocuments(new Term(UUID, uuid));
+  }
 
   public void commit() throws IOException {
     writer.commit();

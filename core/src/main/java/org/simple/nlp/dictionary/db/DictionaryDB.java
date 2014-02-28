@@ -26,6 +26,7 @@ import java.util.Iterator;
 import org.simple.nlp.dictionary.entities.SemanticEntity;
 import org.simple.nlp.dictionary.index.IndexEngine;
 
+import com.sleepycat.bind.tuple.LongBinding;
 import com.sleepycat.bind.tuple.StringBinding;
 import com.sleepycat.bind.tuple.TupleBinding;
 import com.sleepycat.bind.tuple.TupleInput;
@@ -44,8 +45,12 @@ import com.sleepycat.je.EnvironmentConfig;
 public class DictionaryDB {
 
   private Database db;
-
+  
   private StoredSortedMap<String, SemanticEntity> store;
+  
+  private Database counterDB;
+  
+  private StoredSortedMap<String, Long> counter;
 
   private Environment env;
 
@@ -53,7 +58,7 @@ public class DictionaryDB {
 
   private String dbPath;
 
-  public DictionaryDB(String path, boolean writeable) throws IOException {
+  public DictionaryDB(String path, boolean writable) throws IOException {
 
     this.dbPath = path;
 
@@ -75,35 +80,55 @@ public class DictionaryDB {
     dbConfig.setSortedDuplicates(false);
 
     this.db = env.openDatabase(null, "dictionary", dbConfig);
-    this.store = new StoredSortedMap<String, SemanticEntity>(db, new StringBinding(), new SemanticEntityBinding(), writeable);
+    this.counterDB = env.openDatabase(null, "counter", dbConfig);
+    this.store = new StoredSortedMap<String, SemanticEntity>(db, new StringBinding(), new SemanticEntityBinding(), writable);
+    this.counter = new StoredSortedMap<String, Long>(counterDB, new StringBinding(), new LongBinding(), writable);
     this.indexer = new IndexEngine(path + "/index");
   }
 
   public String getPath() {
     return dbPath;
   }
-
+  
   public void save(SemanticEntity entity) throws IOException {
-    store.put(entity.getUUID(), entity);
-    indexer.index(entity, true);
+    if (store.put(entity.getUUID(), entity) == null) {
+      Long count = counter.get(entity.getClass().toString());
+      count = count != null ? ++count : new Integer(1);
+      counter.put(entity.getClass().toString(), count);
+      indexer.index(entity, true);
+    }
   }
-
+  
   public void update(String uuid, SemanticEntity entity) throws IOException {
-    if (store.containsKey(uuid))
+    if (store.containsKey(uuid)) {
       store.replace(uuid, entity);
+      indexer.index(entity, false);
+    }
     else
-      store.put(uuid, entity);
-
-    //
-    indexer.index(entity, false);
+      this.save(entity);
   }
 
-  public SemanticEntity remove(String uuid) {
-    return store.remove(uuid);
+  public SemanticEntity remove(SemanticEntity entity) throws IOException {
+    Long count = counter.get(entity.getClass().toString());
+    if (count != null && count > 0) {
+      count--;
+    } else count = new Long(0);
+    counter.put(entity.getClass().toString(), count);
+    indexer.delete(entity.getUUID());
+    return store.remove(entity.getUUID());
+  }
+  
+  public SemanticEntity getEntity(String uuid) {
+    return store.get(uuid);
+  }
+  
+  public Iterator<?> getEntities(Class<? extends SemanticEntity> clazz) {
+    return new SemanticIterator(store.values().iterator(), clazz);
   }
 
   public void commit() throws IOException {
     db.sync();
+    counterDB.sync();
     indexer.commit();
   }
 
@@ -114,10 +139,13 @@ public class DictionaryDB {
   public Iterator<SemanticEntity> getSemanticEntities() {
     return store.values().iterator();
   }
-
+  
   public void close() throws IOException {
     db.sync();
     db.close();
+    //
+    counterDB.sync();
+    counterDB.close();
     //
     env.sync();
     env.close();
@@ -126,6 +154,11 @@ public class DictionaryDB {
   public long count() {
     return db.count();
   }
+  
+  public long count(Class<? extends SemanticEntity> clazz) {
+    Long count = counter.get(clazz.toString());
+    return count == null ? 0 : count;
+  }
 
   public boolean containsKey(String uuid) {
     return store.containsKey(uuid);
@@ -133,6 +166,35 @@ public class DictionaryDB {
 
   public SemanticEntity search(String uuid) {
     return store.get(uuid);
+  }
+  
+  private class SemanticIterator implements Iterator {
+
+    private Iterator<SemanticEntity> source;
+    
+    private Class<?extends SemanticEntity> entityType;
+    
+    SemanticIterator(Iterator<SemanticEntity> source, Class<? extends SemanticEntity> clazz) {
+      this.source = source;
+      this.entityType = clazz;
+    }
+    
+    public boolean hasNext() {
+      throw new UnsupportedOperationException("Use next() != null to instead of");
+    }
+
+    public SemanticEntity next() {
+      while (source.hasNext()) {
+        SemanticEntity entity = source.next();
+        if (entity == null) return null;
+        else if (entity.getClass() == entityType) return entity;
+      }
+      return null;
+    }
+
+    public void remove() {
+      throw new UnsupportedOperationException();
+    }
   }
 
   private class SemanticEntityBinding extends TupleBinding<SemanticEntity> {

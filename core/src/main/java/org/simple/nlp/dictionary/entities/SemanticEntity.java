@@ -47,11 +47,10 @@ public abstract class SemanticEntity implements Serializable {
   /** . */
   private String uuid;
 
-  public SemanticEntity() {
-    this.uuid = UUID.randomUUID().toString();
-  }
-
   public String getUUID() {
+    if (uuid == null) {
+      uuid = UUID.nameUUIDFromBytes(toString().getBytes()).toString();
+    }
     return uuid;
   }
 
@@ -118,7 +117,7 @@ public abstract class SemanticEntity implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(getClass().getSimpleName()).append("name=").append(name).append(", entity-type=").append(getEntityType())
+    sb.append(getClass().getSimpleName()).append(" name=").append(name).append(", entity-type=").append(getEntityType())
         .append(", variants=").append(variants).append(", keywords=").append(keywords);
     return sb.toString();
   }

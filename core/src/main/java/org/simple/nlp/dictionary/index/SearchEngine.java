@@ -43,7 +43,7 @@ public class SearchEngine {
   private IndexSearcher searcher;
 
   public SearchEngine(String indexDir) throws IOException {
-    IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(indexDir)));
+    IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(indexDir + "/index")));
     searcher = new IndexSearcher(reader);
   }
 
