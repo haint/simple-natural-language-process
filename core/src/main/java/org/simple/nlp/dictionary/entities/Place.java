@@ -187,7 +187,13 @@ public class Place extends SemanticEntity {
       if (!i.hasNext()) {
         String[] values = fieldValue.split(BREAKER);
         this.name = values[0];
-
+        try {
+          Field field = getClass().getDeclaredField(fieldName);
+          field.set(this, this.name);
+        } catch (NoSuchFieldException e) {
+          System.out.println(this);
+        }
+        
         if (values.length > 1) {
           this.variants = new String[values.length - 1];
           System.arraycopy(values, 1, variants, 0, variants.length);
@@ -195,8 +201,12 @@ public class Place extends SemanticEntity {
         return;
       }
 
-      Field field = getClass().getDeclaredField(fieldName);
-      field.set(this, fieldValue);
+      try {
+        Field field = getClass().getDeclaredField(fieldName);
+        field.set(this, fieldValue);
+      } catch (NoSuchFieldException e) {
+        System.out.println(this);
+      }
     }
   }
 
@@ -214,6 +224,8 @@ public class Place extends SemanticEntity {
       map.put("phường", "quarter");
       map.put("thị trấn", "quarter");
       map.put("xã", "quarter");
+      map.put("xóm", "place");
+      map.put("thôn", "place");
       this.map = map;
     }
 

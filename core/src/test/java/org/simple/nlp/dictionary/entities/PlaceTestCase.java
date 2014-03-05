@@ -43,6 +43,8 @@ public class PlaceTestCase {
     }
     Assert.assertEquals(2, list.size());
     Assert.assertEquals("việt nam", list.get(0).getName());
+    Assert.assertEquals("việt nam", list.get(0).getCountry());
     Assert.assertEquals("cần thơ", list.get(1).getName());
+    Assert.assertEquals("cần thơ", list.get(1).getCity());
   }
 }
