@@ -104,7 +104,7 @@ public class WordTree {
     Set<String> holder = new HashSet<String>();
     holder.add(newEntity.getName());
     if (VietnameseUtil.containVietnameseCharacter(newEntity.getName())) {
-      holder.add(newEntity.getName());
+      holder.add(VietnameseUtil.removeVietnameseAccent(newEntity.getName()));
     }
     
     //
@@ -113,7 +113,7 @@ public class WordTree {
       for (String variant : variants) {
         holder.add(variant);
         if (VietnameseUtil.containVietnameseCharacter(newEntity.getName())) {
-          holder.add(variant);
+          holder.add(VietnameseUtil.removeVietnameseAccent(variant));
         } 
       }
     }

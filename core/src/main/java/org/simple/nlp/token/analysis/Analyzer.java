@@ -15,36 +15,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.simple.nlp.token;
+package org.simple.nlp.token.analysis;
+
+import java.util.List;
+
+import org.simple.nlp.token.Token;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
  *
- * Feb 25, 2014
+ * Feb 26, 2014
  */
-public enum TokenType {
+public abstract class Analyzer {
 
-  /** . */
-  UNKNOW,
-  
-  /** . */
-  BLANK,
-  
-  /** . */
-  NEW_LINE,
-  
-  /** . */
-  PUNCTUATION,
- 
   /** .*/
-  XML_TAG,
+  protected List<Token> source;
   
-  /** .*/
-  WORD,
+  public Analyzer(List<Token> source) {
+    this.source = source;
+  }
   
-  /** .*/
-  SEMANTIC,
+  public List<Token> getSource() {
+    return this.source;
+  }
   
-  /** .*/
-  DIGIT;
+  public abstract List<Token> analyze();
 }

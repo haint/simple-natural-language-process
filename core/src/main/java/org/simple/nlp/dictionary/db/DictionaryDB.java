@@ -122,7 +122,7 @@ public class DictionaryDB {
     return store.get(uuid);
   }
   
-  public Iterator<?> getEntities(Class<? extends SemanticEntity> clazz) {
+  public Iterator<SemanticEntity> getEntities(Class<? extends SemanticEntity> clazz) {
     return new SemanticIterator(store.values().iterator(), clazz);
   }
 
