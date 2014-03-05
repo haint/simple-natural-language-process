@@ -183,7 +183,8 @@ public class DictionaryDBTestCase extends TestCase {
 
     SearchEngine searcher = new SearchEngine(db.getPath());
     assertEquals(1, searcher.query("name: quoctugiam", 100).getTotalHits());
-    assertEquals(3, searcher.query("name: bay", 100).getTotalHits());
+    assertEquals(1, searcher.query("name: bay", 100).getTotalHits());
+    assertEquals(3, searcher.query("bay*", 100).getTotalHits());
     assertEquals(2, searcher.query("city@place: hanoi", 100).getTotalHits());
   }
 }

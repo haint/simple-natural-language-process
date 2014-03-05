@@ -24,6 +24,7 @@ import org.simple.nlp.dictionary.db.DictionaryDB;
 import org.simple.nlp.dictionary.entities.Place;
 import org.simple.nlp.dictionary.entities.Product;
 import org.simple.nlp.dictionary.entities.SemanticWord;
+import org.simple.nlp.dictionary.index.SearchEngine;
 
 /**
  * @author <a href="mailto:haithanh0809@gmail.com">Nguyen Thanh Hai</a>
@@ -35,9 +36,12 @@ public class DictionaryServiceTestCase {
   @Test
   public void testWord() throws Exception {
     DictionaryDB db = DictionaryService.getInstance().getDatabase();
-    Assert.assertEquals(49631, db.count());
+    Assert.assertEquals(49630, db.count());
     Assert.assertEquals(29594, db.count(SemanticWord.class));
-    Assert.assertEquals(18319, db.count(Place.class));
+    Assert.assertEquals(18318, db.count(Place.class));
     Assert.assertEquals(1718, db.count(Product.class));
+    
+    SearchEngine searcher = new SearchEngine("target/db");
+    Assert.assertEquals(18318, searcher.query("country@place:\"việt nam\"", 100).getTotalHits());
   }
 }
